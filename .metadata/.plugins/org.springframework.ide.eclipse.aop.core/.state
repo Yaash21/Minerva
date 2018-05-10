@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<aop-reference-model>
+<aop-project name="UserSearchService"/>
+<aop-project name="OrchestraService"/>
+<aop-project name="TermBankService"/>
+<aop-project name="restaurant-service"/>
+<aop-project name="Content-Crawler-Service"/>
+<aop-project name="ImageCrawlerService"/>
+<aop-project name="Neo4jManager"/>
+<aop-project name="RecommendationService"/>
+</aop-reference-model>

@@ -1,0 +1,4 @@
+spring.application.name= imageCrawlerService
+spring.config.uri = ${config.ip}
+management.security.enabled=false
+

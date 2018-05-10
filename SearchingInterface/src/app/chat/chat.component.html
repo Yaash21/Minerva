@@ -1,0 +1,50 @@
+<div class="navigation">
+  <app-navbar [role]="greeting"></app-navbar>
+</div>
+<div [hidden] = 'chatInterface' >
+  <div style="text-align:center">
+    <div class="message-space" id = "messageSpace" >
+      <div *ngFor="let message of messages">
+        <div [class.right]="message.self" [class.left]="!message.self" *ngIf="message.text != null">
+          <div [class.message-background-right]="message.self" [class.message-background-left]="!message.self">
+            {{message.text}}<br>
+            <div [class.time-right]="message.self" [class.time-left]="!message.self">
+              {{message.time | date:"hh:mm"}}
+            </div>
+          </div>
+        </div>
+        <div *ngIf="message.result.length != 0">
+          <div style="display: flex; height: 25%; width: 100%; overflow-x:scroll; overflow-y: hidden">
+            <div *ngFor="let item of message.result" class="result">
+              <app-card-fancy  [cardDetails] = item></app-card-fancy>
+            </div>
+          </div>
+          <div style= "text-align: center; display: flex; overflow-x: scroll; overflow-y:hidden">
+            <mat-chip-list class="mat-chip-list-stacked" *ngFor="let recommend of recommendation; let i = index">
+              <mat-chip style = "background-color: #2b2933; color: white; display: flex; padding-right: 3px; margin-right:2px; font-size: 14px; height: 40%; width: 200px; overflow-x:scroll; overflow-y: hidden;" (click)="sendRecommendation(i, $event)" *ngIf="i<6" selected="false">
+                {{recommend.recommendationString}}
+              </mat-chip>
+            </mat-chip-list>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="toBottom" [hidden]="showOrNot">
+      <button mat-icon-button class="icon" (click)="scrollToTheBottom()">
+        <mat-icon style="color: #fff0ff;">arrow_drop_down_circle</mat-icon>
+      </button>
+    </div>
+    <div class="input-box">
+      <input  id="input" style="width: 70%; height: 30px;" type="text" #input  (keyup.enter) = "sendMessage(input.value, $event)">
+      <div *ngIf="activated">
+        <i class="fa fa-spinner fa-pulse" style="color:white; font-size:25px;"></i>
+      </div>
+      <button mat-icon-button (click)="startRecP5($event)" color="white" >
+        <mat-icon style="color: white">mic</mat-icon>
+      </button>
+      <button mat-icon-button color="white" class="send" (click)="sendMessage(input.value, $event)">
+        <mat-icon style="color: white">send</mat-icon>
+      </button>
+    </div>
+  </div>
+</div>

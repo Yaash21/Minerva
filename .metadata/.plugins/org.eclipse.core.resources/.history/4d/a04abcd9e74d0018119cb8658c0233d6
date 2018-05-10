@@ -1,0 +1,15 @@
+
+#rabbitmq
+spring.rabbitmq.host =172.23.238.163
+spring.rabbitmq.port = 5672
+spring.rabbitmq.username = admin
+spring.rabbitmq.password = admin2017
+queueName = search-service-queue
+publishQueue = user-search-result-queue
+#redis
+redisHost = redis://172.23.238.178:6379
+
+eureka.client.registerWithEureka= true
+eureka.client.fetchRegistry= true
+eureka.client.serviceUrl.defaultZone= http://172.23.238.167:8070/eureka/
+eureka.instance.hostname= http://172.23.238.167

@@ -1,0 +1,79 @@
+<app-navbar [role] = "role"></app-navbar>
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header  (focus) = "checking()">
+      <mat-panel-title>
+        <b>Populate concepts</b>
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+    <mat-form-field>
+      <input matInput type="text" placeholder="Domain" [matAutocomplete]="auto" [readonly]="domainInput" [(ngModel)]="domain" (keyup)= "fetchConcepts();" [formControl]="domainFormControl" [errorStateMatcher]="matcher">
+      <mat-autocomplete #auto="matAutocomplete">
+        <mat-option *ngFor="let domain of newDomainList | async" [value]="domain" (click)="fetchConcepts();">
+          {{ domain }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-hint>Enter Domain</mat-hint>
+      <mat-error *ngIf="domainFormControl.hasError('required')">
+        Enter one <strong>domain</strong>
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-hint>Type a concept</mat-hint>
+      <input #concept matInput placeholder="Concept" [matAutocomplete]="autoComplete" [(ngModel)]="concepts" [formControl]="conceptFormControl" (keyup) = "checking()" [errorStateMatcher]="matcher">
+      <mat-autocomplete #autoComplete="matAutocomplete">
+        <mat-option *ngFor="let concept of newConceptList | async" [value]="concept" (click)="checking()">
+          {{ concept }}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="conceptFormControl.hasError('required') && !domainInput" >
+        Enter a <strong>concept</strong>
+      </mat-error>
+    </mat-form-field>
+    <button class="addbutton" type="submit" mat-button color="primary" [disabled]="buttondisabled" (click)="addConcepts(concept.value)">Add</button>
+    <mat-form-field class="chip-list">
+      <mat-chip-list #chipList>
+        <mat-chip *ngFor="let concept of concepts1" [selectable]="selectable"
+        [removable]="removable" (remove)="remove(concept)">
+        {{ concept }}
+        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+      </mat-chip>
+      <input [readonly]="true" placeholder="Concepts..."
+      [matChipInputFor]="chipList"
+      [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+      [matChipInputAddOnBlur]="addOnBlur"
+      (matChipInputTokenEnd)="add($event)" />
+    </mat-chip-list>
+  </mat-form-field>
+  <mat-action-row>
+    <div *ngIf="activated">
+      <i class="fa fa-spinner fa-pulse"></i>
+    </div>
+    <button class="populatebutton" type="submit" mat-button color="primary" [disabled]="populatebuttondisabled"  (click)="populatebutton()">Populate</button>
+  </mat-action-row>
+</mat-expansion-panel>
+
+<mat-expansion-panel>
+  <mat-expansion-panel-header  (focus) = "checking1()">
+    <mat-panel-title>
+      <b> Populate All The Concepts </b>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <mat-form-field>
+    <input matInput type="text" placeholder="Domain" [matAutocomplete]="autoAll" [(ngModel)]="domain1" (keyup)= "fetchAllConcepts();" [formControl]="domainFormControl1" [errorStateMatcher]="matcher">
+    <mat-autocomplete #autoAll="matAutocomplete">
+      <mat-option *ngFor="let domain of newDomainList1 | async" [value]="domain" (click)="fetchAllConcepts()">
+        {{ domain }}
+      </mat-option>
+    </mat-autocomplete>
+    <mat-hint>Enter Domain</mat-hint>
+    <mat-error *ngIf="domainFormControl1.hasError('required')">
+      Enter one <strong>domain</strong>
+    </mat-error>
+  </mat-form-field>
+  <mat-action-row>
+    <button class="populatebutton" type="submit" mat-button color="primary" [disabled]="populateAllButtonDisabled"  (click)="populateAllButton()">Populate All</button>
+  </mat-action-row>
+</mat-expansion-panel>
+</mat-accordion>
+<app-term-bank></app-term-bank>

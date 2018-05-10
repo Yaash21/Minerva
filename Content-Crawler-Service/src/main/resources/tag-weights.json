@@ -1,0 +1,13 @@
+{
+	"title": 10,
+	"meta[name=keywords]": 10,  
+	"meta[name=description]": 9,
+	"h1": 9,
+	"h2": 7,
+	"h3": 6,
+	"h4": 5,
+	"h5": 4,
+	"h6": 3,
+	"p": 2,
+	"li": 2
+}

@@ -1,0 +1,12 @@
+server.port= 8092
+uri = bolt://172.23.238.167
+username = neo4j
+password = password
+
+# Rabbitmq
+spring.rabbitmq.host=172.23.238.163
+spring.rabbitmq.port=5672
+spring.rabbitmq.username=admin	
+spring.rabbitmq.password=admin2017
+queueName = recommendation-service-queue
+publishQueue = recommendations.queue

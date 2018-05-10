@@ -1,0 +1,85 @@
+.example-card {
+  width: 200px;
+  /* align-self: left; */
+  margin-bottom: 10px;
+  height: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.example-header-image {
+  shape-outside: none;
+  width: 20px;
+  height: 20px;
+}
+
+mat-card-avatar {
+  height: 40px;
+  width: 40px;
+  border-radius: 100;
+}
+.material-icons {
+}
+
+ul {
+  list-style-type: none;
+}
+mat-chip {
+  padding-top: 100px;
+}
+.icons {
+  margin: auto;
+  align-content: middle;
+  text-align: middle;
+  align-items: middle;
+  align-self: center;
+}
+.mat-chip-list-wrapper {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: baseline;
+  margin-top: 25px;
+}
+.mat-chip:not(.mat-basic-chip) + .mat-chip:not(.mat-basic-chip) {
+  margin: 8px 0 0 2px;
+}
+
+.l {
+  align-content: middle;
+  text-align: middle;
+  align-items: middle;
+  align-self: center;
+}
+mat-card-header {
+  height: 50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+mat-card-content {
+  padding-top: 2px;
+  height: 100px;
+  text-overflow: ellipsis;
+  white-space: pre-wrap;
+  overflow: hidden;
+  text-align: justify;
+}
+mat-card-footer {
+  height: 50px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+mat-card-title, mat-card-subtitle {
+  text-overflow: ellipsis;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+a{
+  text-decoration: none;
+}

@@ -1,0 +1,3 @@
+spring.application.name= imageCrawlerService
+spring.config.uri = ${config.ip}
+

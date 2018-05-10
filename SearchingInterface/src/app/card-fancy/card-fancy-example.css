@@ -1,0 +1,32 @@
+.example-card {
+  max-width: 960px;
+}
+
+.example-header-image {
+  background-image: url('https://image.flaticon.com/teams/slug/google.jpg');
+  background-size: cover;
+}
+.material-icons{
+
+
+}
+mat-chip{
+  padding-top: 100px;
+
+}
+.icons{
+  margin: 0 auto;
+align-content: middle;
+text-align: middle;
+align-items: middle;
+align-self: center;
+
+
+
+}
+.l{
+  align-content: middle;
+text-align: middle;
+align-items: middle;
+align-self: center;
+}

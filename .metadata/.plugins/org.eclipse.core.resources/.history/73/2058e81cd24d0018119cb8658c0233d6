@@ -1,0 +1,5 @@
+#server.port= 8096
+#uri = bolt://172.23.238.167
+#username = neo4j
+#password = password
+#redisHost = redis://172.23.238.178:6379

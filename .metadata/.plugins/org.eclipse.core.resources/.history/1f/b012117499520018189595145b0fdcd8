@@ -1,0 +1,20 @@
+#server.port= 8092
+#uri = bolt://172.23.239.187
+#username = neo4j
+#password = password
+#
+## Rabbitmq
+#spring.rabbitmq.host=172.23.239.185
+#spring.rabbitmq.port=5672
+#spring.rabbitmq.username=admin	
+#spring.rabbitmq.password=admin2017
+#queueName = recommendation-service-queue
+#publishQueue = recommendations.queue
+#
+#endpoints.prometheus.enabled=true
+#management.endpoints.web.exposure.include=*
+#
+#eureka.client.registerWithEureka= true
+#eureka.client.fetchRegistry= true
+#eureka.client.serviceUrl.defaultZone= http://172.23.239.187:8070/eureka/
+#eureka.instance.hostname= http://172.23.239.187

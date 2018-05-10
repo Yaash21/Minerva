@@ -1,0 +1,83 @@
+<mat-expansion-panel>
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+
+      <b>Populate Term Bank</b>
+
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+
+  <form class=" Indicator">
+    <mat-form-field class="Indicator-name">
+      <input matInput type="text" placeholder="Give a Indiactor name" [(ngModel)]="term" [formControl]="indicatorControl" [matAutocomplete]="auto" (keyup)="checking()" [errorStateMatcher]="matcher">
+      <mat-autocomplete #auto ="matAutocomplete">
+        <mat-option *ngFor="let option of filteredOptions | async" [value] ="option" (click)="checking()">
+          {{option}}
+        </mat-option>
+      </mat-autocomplete>
+      <mat-error *ngIf="indicatorControl.hasError('required')">
+        <p>Enter a <strong> Term </strong></p>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field>
+      <mat-select placeholder="select" [formControl]="selectorControl" [errorStateMatcher]="matcher" >
+        <mat-option *ngFor="let item of list" [value]="item.value" (click)="checking()">
+          {{item.viewValue}}
+        </mat-option>
+      </mat-select>
+      <mat-error *ngIf="selectorControl.hasError('required')">
+        <p> Please select a value</p>
+      </mat-error>
+    </mat-form-field>
+
+    <button mat-button type="submit" [disabled]="buttondisabled"  (click)="fetchApi()">Fetch</button>
+
+    <mat-error *ngIf="check">
+      <p> Your Term is Incorrect</p>
+    </mat-error>
+
+    <div *ngIf="flag==true" >
+
+      <div *ngFor ="let x of termList; let i = index;">
+        <mat-card class="term-bank-card">
+          <mat-chip-list aria-orientation ="vertical">
+            <mat-chip color="primary" #termInput (click)="termIndex=i"> {{x}}</mat-chip>
+          </mat-chip-list>
+
+
+          <mat-form-field>
+            <mat-select placeholder={{intentTemp}}  #intentInput onload="intentInput.value=null">
+              <mat-option >None</mat-option>
+              <mat-option *ngFor="let item of intentSet" [value]="item.value" (click)= "intentIndex=i" >
+                {{item.viewValue}}
+              </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="intentControl.hasError('required')">
+            <p> Please select a value</p>
+          </mat-error> -->
+        </mat-form-field>
+        <mat-form-field>
+
+          <mat-select placeholder={{weightTemp}}  #weightInput onload="weightInput.value=null"  >
+            <mat-option >None</mat-option>
+            <mat-option *ngFor="let item of weightSet" [value]="item.value" (click) = "weightIndex=i">
+              {{item.viewValue}}
+            </mat-option>
+          </mat-select>
+          <!-- <mat-error *ngIf="weightControl.hasError('required')">
+          <p> Please select a value</p>
+        </mat-error> -->
+      </mat-form-field>
+      <mat-checkbox (onchange)="intentInput.value=null" [hidden]="intentInput.value==null || weightInput.value==null"(click)="checkBoxIndex=i" (click)="checkBox(x,intentInput.value,weightInput.value,i)">Include</mat-checkbox>
+      <!-- {{intentInput.value}} -->
+    </mat-card>
+  </div>
+  <div class ="Populate-neo4j" *ngIf="!neo4jList.length==0">
+    <button mat-raised-button color ="primary" (click)="populateNeo4j()">Populate</button>
+  </div>
+
+</div>
+</form>
+
+</mat-expansion-panel>

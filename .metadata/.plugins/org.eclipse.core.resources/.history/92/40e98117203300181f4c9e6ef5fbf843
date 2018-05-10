@@ -1,0 +1,3 @@
+spring.application.name = orchestraService
+spring.config.uri = ${config.ip}
+management.security.enabled = false

@@ -1,0 +1,31 @@
+
+<!-- {{cardDetails}} -->
+<a href="{{Url}}" target="_blank">
+  <mat-card class="example-card">
+    <mat-card-header>
+
+      <img  src="https://www.google.com/s2/favicons?domain={{Url}}" mat-card-avatar  class="example-header-image">
+
+      <mat-card-title><a href="{{Url}}" target="_blank">{{Title}}</a></mat-card-title>
+      <mat-card-subtitle><a href="{{Url}}" target="_blank">{{Url}}</a></mat-card-subtitle>
+    </mat-card-header>
+    <mat-divider></mat-divider>
+    <mat-card-content>
+        {{Description}}
+    </mat-card-content>
+    <mat-divider></mat-divider>
+    <mat-card-footer class ="icons">
+      <mat-chip-list class ="l">
+        <mat-chip *ngIf="imageCount != 0" style="background: #00ffff">
+          <i class="material-icons">collections</i><font>{{imageCount}}</font>
+        </mat-chip>
+        <mat-chip *ngIf="videoCount != 0" style="background: #fd8970">
+          <i class="material-icons">videocam</i> <font>{{videoCount}}</font>
+        </mat-chip>
+        <mat-chip *ngIf="codeCount != 0" style="background: lightblue">
+          <i class="material-icons">code</i><font>{{codeCount}}</font>
+        </mat-chip>
+      </mat-chip-list>
+    </mat-card-footer>
+  </mat-card>
+</a>

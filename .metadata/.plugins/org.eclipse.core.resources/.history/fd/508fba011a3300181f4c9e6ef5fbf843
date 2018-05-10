@@ -1,0 +1,9 @@
+#server.port =8090
+#spring.rabbitmq.host=172.23.238.163
+#spring.rabbitmq.port=5672
+#spring.rabbitmq.username=admin	
+#spring.rabbitmq.password=admin2017
+queueName = image-service-queue
+publishQueue = crawler-service-queue
+
+

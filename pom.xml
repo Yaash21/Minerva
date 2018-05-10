@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		 xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>com.stackroute</groupId>
+	<artifactId>semantic-search-parent</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<packaging>pom</packaging>
+
+	<name>Semantic Search</name>
+	<description>Semantic Search Microservices in Spring Boot</description>
+
+
+	<modules>
+		<module>config-server</module>
+		<module>eureka-server</module>		
+		<module>api-gateway</module>
+		<module>Code-Crawler-Service</module>
+		<module>ImageCrawlerService</module>
+		<module>Content-Crawler-Service</module>
+		<module>VideoCrawlerService</module>
+		<module>ConfidenceScoreCalculator</module>
+		<module>search</module>
+		<module>UserSearchService</moduler>
+		<module>Ne04jManager</module>
+		<module>TermBankService</module>
+		<module>authentication</module>
+		<module>Indexer-service</module>
+		<module>lemmatization-service</module>
+		<module>nlp-service</module>
+		<module>orchestraService</module>
+		<module>pos-tagging-service</module>
+		<module>RabbitMq</module>
+		<module>recommendation-service</module>
+		<module>UserSearchService</module>
+	</modules>
+</project>
+
+
+
+
+
+
+

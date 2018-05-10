@@ -1,0 +1,219 @@
+package com.stackroute.service;
+
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.select.Elements;
+import org.springframework.amqp.AmqpException;
+import org.springframework.beans.factory.annotation.Autowired;
+
+import org.springframework.stereotype.Component;
+
+import com.stackroute.messaging.Publish;
+import com.stackroute.model.Model;
+
+/**
+ * The integration() method integrates the 4 messages with same Url.
+ * It does by  matching a unique string i.e domain+concept +url.
+ * The messages in the queue are random and are not in sync, thus a count is put to keep track of the messages.
+ * The count will track the messages have the same unigue string and that will be 4 in this case as due to four crawler services.
+ * As soon as the count becomes 3, the 4th message is synced and is published with outputs of all the four crawler services.
+ * @author yaash
+ *
+ */
+
+@Component
+public class Service {
+
+	private Publish publish;
+	@Autowired
+	public void setPublish(Publish publish) {
+		this.publish = publish;
+	}
+	private HashMap<String,Model> modelMap = new LinkedHashMap<>();
+	private HashMap<String,Integer> uniqueList = new LinkedHashMap<>();
+	
+	private ArrayList<JSONObject> joList =new ArrayList<JSONObject>();
+
+
+
+
+	public  ArrayList<JSONObject> integration(JSONObject fetchedObj){
+
+		try {
+			String domain = fetchedObj.getString("domain");
+			String concept = fetchedObj.getString("concept");
+			String url = fetchedObj.getString("url");
+
+			String unique= domain+concept+url;
+
+			if(uniqueList.containsKey(unique) && uniqueList.get(unique)< 3)	
+			{	Model model=modelMap.get(unique);
+			if (fetchedObj.has("terms")) { 
+				model.setTerms(fetchedObj.getJSONObject("terms"));
+				int count = uniqueList.get(unique);
+				uniqueList.replace(unique,count+1);
+			}
+			else if(fetchedObj.has("ImgCount")){
+				model.setImgCount(fetchedObj.getInt("ImgCount"));
+				int count = uniqueList.get(unique);
+				uniqueList.replace(unique,count+1);
+			}else if(fetchedObj.has("codecount")){
+				model.setCodecount(fetchedObj.getInt("codecount"));
+				int count = uniqueList.get(unique);
+				uniqueList.replace(unique,count+1);
+			} 
+			else{
+				model.setVideoCount(fetchedObj.getInt("VideoCount"));
+				int count = uniqueList.get(unique);
+				uniqueList.replace(unique,count+1);
+			} 
+			modelMap.put(unique, model);
+			//		
+			}
+			else if(uniqueList.containsKey(unique) && uniqueList.get(unique)== 3){
+				Model model=modelMap.get(unique);
+				if (fetchedObj.has("terms")) {
+					model.setTerms(fetchedObj.getJSONObject("terms"));
+					//model.setTerms((fetchedObj.getJSONObject("terms").toString()));
+					//String termObj = fetchedObj.getString("terms");
+					//model.setTerms( new JSONObject(termObj));
+					int count = uniqueList.get(unique);
+					uniqueList.replace(unique,count+1);
+				}
+				else if(fetchedObj.has("ImgCount")){
+					model.setImgCount(fetchedObj.getInt("ImgCount"));
+					int count = uniqueList.get(unique);
+					uniqueList.replace(unique,count+1);
+				}else if(fetchedObj.has("codecount")){
+					model.setCodecount(fetchedObj.getInt("codecount"));
+					int count = uniqueList.get(unique);
+					uniqueList.replace(unique,count+1);
+				} 
+				else{
+					model.setVideoCount(fetchedObj.getInt("VideoCount"));
+					int count = uniqueList.get(unique);
+					uniqueList.replace(unique,count+1);
+				} 
+
+				Model finalModel =modelMap.get(unique);
+				int imgCount= finalModel.getImgCount();
+				int codeCount =finalModel.getCodecount();
+				int videoCount = finalModel.getVideoCount();
+				JSONObject jo = new JSONObject();
+				int count=0;
+				if(imgCount==-1){
+					imgCount =0;
+					count++;
+					finalModel.setImgCount(imgCount); 
+				} if(codeCount==-1){
+					codeCount=0;
+					count++;
+					finalModel.setCodecount(codeCount);
+				}if(videoCount==-1){
+					videoCount=0;
+					count++;
+					finalModel.setVideoCount(videoCount);
+				}if(count<2){
+				jo.put("concept",finalModel.getConcept());
+				jo.put("domain", finalModel.getDomain());
+				jo.put("url", finalModel.getUrl());
+				jo.put("terms", finalModel.getTerms());
+				jo.put("imgCount", finalModel.getImgCount());
+				jo.put("codeCount",finalModel.getCodecount());
+				jo.put("videoCount", finalModel.getVideoCount()); 
+				Document doc;
+				try {
+					doc = Jsoup.connect(finalModel.getUrl()).userAgent("Mozilla").get();
+					Elements title = doc.getElementsByTag("title");
+					Elements meta =doc.select("meta[name=description]");
+					String titleUrl = "No Title";
+					if(title.hasText()){
+						 titleUrl = title.text().replaceAll("\"", "");
+					}
+					String metaUrl = "No Description";
+					if(meta.size()!=0){
+						metaUrl=meta.get(0).attr("content").replaceAll("\"","");
+					}
+					jo.put("titleUrl",titleUrl );
+					jo.put("metaUrl",metaUrl );
+					
+				joList.add(jo);
+				String json = jo.toString();
+
+				modelMap.remove(unique);
+				uniqueList.remove(unique);
+				publish.publishMsg(json);
+				} catch (IOException e) {
+					System.out.println("Page Not Found");
+					JSONObject errorObj = new JSONObject();
+					errorObj.put("concept",finalModel.getConcept());
+					errorObj.put("domain", finalModel.getDomain());
+					errorObj.put("url", finalModel.getUrl());
+					errorObj.put("terms", finalModel.getTerms());
+					errorObj.put("imgCount", finalModel.getImgCount());
+					errorObj.put("codeCount",finalModel.getCodecount());
+					errorObj.put("videoCount", finalModel.getVideoCount()); 
+					errorObj.put("titleUrl",finalModel.getUrl() );
+					errorObj.put("metaUrl","No Description" );
+					joList.add(errorObj);
+					String jsonError = errorObj.toString();
+					modelMap.remove(unique);
+					uniqueList.remove(unique);
+					try {
+						publish.publishMsg(jsonError);
+					} catch (AmqpException | IOException e1) {
+						e1.printStackTrace();
+					}
+					
+				}
+				}
+
+			}
+			else{
+				uniqueList.put(unique,1);
+				Model model = new Model();
+				model.setDomain(fetchedObj.getString("domain"));
+				model.setConcept(fetchedObj.getString("concept"));
+				model.setUrl(fetchedObj.getString("url"));
+
+				if (fetchedObj.has("terms")) {
+					model.setTerms(fetchedObj.getJSONObject("terms"));
+					//						model.setTerms((fetchedObj.getJSONObject("terms").toString()));
+					//						String termObj = fetchedObj.getString("terms");
+					//						model.setTerms( new JSONObject(termObj));
+				}
+				else if(fetchedObj.has("ImgCount")){
+					model.setImgCount(fetchedObj.getInt("ImgCount"));
+
+				}else if(fetchedObj.has("codecount")){
+					model.setCodecount(fetchedObj.getInt("codecount"));
+
+				} 
+				else{
+					model.setVideoCount(fetchedObj.getInt("VideoCount"));
+				} 
+				modelMap.put(unique, model);			
+			}
+
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return joList;
+
+	}
+	public ArrayList<JSONObject> getJoList() {
+		return joList;
+	}
+
+
+
+}

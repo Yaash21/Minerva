@@ -1,0 +1,84 @@
+package org.stackroute.service;
+
+import static org.junit.Assert.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.junit.Before;
+import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.amqp.AmqpException;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
+
+import com.stackroute.OrchestraServiceApplication;
+import com.stackroute.messaging.Publish;
+import com.stackroute.messaging.Receiver;
+import com.stackroute.service.Service;
+
+@RunWith(SpringRunner.class)
+@SpringBootTest(classes={OrchestraServiceApplication.class})
+public class ServiceITTest {
+	
+	@Autowired
+	private Receiver receiver ;
+	
+	@Autowired
+	private Service service;
+
+	@Mock
+	private Publish publish;
+
+	@Before
+	public void setupMock() throws AmqpException, IOException {
+		MockitoAnnotations.initMocks(this);
+		service.setPublish(publish);
+
+		
+	}
+
+	@Test
+	public void integtationTest() {
+		//Arrange
+		JSONObject terms = new JSONObject();
+		JSONObject expected = new JSONObject();
+		try {
+			terms.put("Delete",0);
+		terms.put("fundamental", 1);
+		receiver.receiveMessage("{\"domain\":\"Java\",\"concept\":\"Algorithm\",\"url\":\"https://www.javatpoint.com\",\"terms\": {\"Delete\":0,\"fundamental\":1}}");
+		receiver.receiveMessage("{\"domain\":\"Java\",\"concept\":\"Algorithm\",\"url\":\"https://www.javatpoint.com\",\"ImgCount\":128}");
+		receiver.receiveMessage("{\"domain\":\"Java\",\"concept\":\"Algorithm\",\"url\":\"https://www.javatpoint.com\",\"VideoCount\":2}");
+		receiver.receiveMessage("{\"domain\":\"Java\",\"concept\":\"Algorithm\",\"url\":\"https://www.javatpoint.com\",\"codecount\":5}");
+
+		//Act
+		ArrayList<JSONObject> actual = service.getJoList();
+
+		//Assert
+		expected.put("concept", "Algorithm");
+		expected.put("domain", "Java");
+		expected.put("url","https://www.javatpoint.com");
+		expected.put("imgCount", 128);
+		expected.put("codeCount", 5);
+		expected.put("videoCount", 2);
+		expected.put("terms", terms);
+		expected.put("metaUrl","Tutorials, Free Online Tutorials, Javatpoint provides tutorials and interview questions of all technology like java tutorial, android, java frameworks, javascript, ajax, core java, sql, python, php, c language etc. for beginners and professionals." );
+		expected.put("titleUrl","Tutorials - Javatpoint");
+		String expectedString = expected.toString();
+		String actualString = actual.get(0).toString();
+		System.out.println(expectedString);
+		System.out.println(actualString);
+		assertEquals(expectedString,actualString);
+		} catch (JSONException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+}

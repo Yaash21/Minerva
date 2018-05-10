@@ -1,0 +1,8 @@
+.populatebutton{
+  float: left;
+}
+mat-chip {
+  max-width: 180px;
+  text-align: center;
+  font-size: 120%
+}

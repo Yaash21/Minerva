@@ -1,0 +1,20 @@
+image: java:8-jdk
+
+stages:
+ - test
+ - build
+maven-test:
+ image: maven:3-jdk-8
+ stage: test
+ script: "mvn test -B"
+maven-build:
+ image: maven:3-jdk-8
+ stage: build
+ script: "mvn package -B"
+ artifacts:
+  paths:
+    - target/*.jar
+
+image: mongodb:latest
+services: 
+ - mongo

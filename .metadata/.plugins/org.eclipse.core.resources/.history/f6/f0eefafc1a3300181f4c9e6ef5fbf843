@@ -1,0 +1,55 @@
+package com.stackroute;
+
+import org.springframework.amqp.rabbit.connection.ConnectionFactory;
+import org.springframework.amqp.rabbit.listener.SimpleMessageListenerContainer;
+import org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.Bean;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
+
+import com.stackroute.messaging.Receiver;
+import com.stackroute.model.Model;
+
+@SpringBootApplication
+public class OrchestraServiceApplication {
+	@Value("${queueName}")
+	public  String queueName;
+	
+	@Value("${publishQueue}")
+	public String publishQueue;
+
+	@Bean
+	SimpleMessageListenerContainer container(ConnectionFactory connectionFactory,
+			MessageListenerAdapter listenerAdapter) {
+		SimpleMessageListenerContainer container = new SimpleMessageListenerContainer();
+		container.setConnectionFactory(connectionFactory);
+		container.setQueueNames(queueName);
+		container.setMessageListener(listenerAdapter);
+		return container;
+	}
+
+	@Bean
+	MessageListenerAdapter listenerAdapter(Receiver receiver) {
+		return new MessageListenerAdapter(receiver, "receiveMessage");
+
+	}
+
+	//    @Bean
+	//    JedisConnectionFactory jedisConnectionFactory(){
+	//    	return new JedisConnectionFactory();
+	//    }
+	//    
+	//    @Bean
+	//    RedisTemplate<String,Model> redisTemplate(){
+	//    	RedisTemplate<String,Model> redisTemplate = new RedisTemplate<>();
+	//    	redisTemplate.setConnectionFactory(jedisConnectionFactory());
+	//		return redisTemplate;
+	//    	
+	//    }
+	public static void main(String[] args) {
+		SpringApplication.run(OrchestraServiceApplication.class, args);
+	}
+}

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.m2e.core.pom.dependencies">
+	</section>
+	<section name="org.eclipse.m2e.core.pom.overview">
+		<list key="ciManagementUrl">
+		</list>
+		<list key="ciManagementSystem">
+		</list>
+		<list key="issueManagementSystem">
+		</list>
+		<list key="issueManagementUrl">
+		</list>
+	</section>
+	<section name="MavenProjectImportWizardPage">
+		<list key="rootDirectory">
+			<item value="/home/yaash/workspace/gitLab/Content-Crawler-Service"/>
+			<item value="/home/yaash/workspace/semanticSearchGroup/api-gateway"/>
+			<item value="/home/yaash/workspace/semanticSearchGroup/config-server/src/main/java/com/stackroute/config/ConfigServerApplication.java"/>
+			<item value="/home/yaash/workspace/semanticSearchGroup/config-server"/>
+			<item value="/home/yaash/workspace/semanticSearchGroup/eureka-server"/>
+			<item value="/home/yaash/workspace/semanticSearchGroup/Neo4jManager"/>
+		</list>
+		<list key="projectNameTemplate">
+			<item value="[artifactId]"/>
+			<item value="[artifactId]-TRUNK"/>
+			<item value="[artifactId]-[version]"/>
+			<item value="[groupId].[artifactId]"/>
+			<item value="[groupId].[artifactId]-[version]"/>
+			<item value="[name]"/>
+		</list>
+	</section>
+</section>

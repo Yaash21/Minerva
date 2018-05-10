@@ -1,0 +1,23 @@
+.herosection {
+  padding-top: 10px;
+}
+
+h1, mat-action-row {
+  display: flex;
+  justify-content: center;
+}
+
+mat-action-row {
+  padding: 1px;
+  border-top-style: dashed;
+}
+
+.eye{
+  float: right;
+  margin: 0px;
+  padding: 0px;
+}
+
+.passwordStyles {
+  display: inline-block;
+}

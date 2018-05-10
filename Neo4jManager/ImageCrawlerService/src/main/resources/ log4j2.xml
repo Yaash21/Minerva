@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+     <Appenders>
+        <Console name="ConsoleAppender" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n" />
+        </Console>
+        
+        <File name="FileAppender" fileName="applogs/Application.log">
+            <PatternLayout pattern="%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n" />
+        </File>
+        
+        <File name="FileAppender1" fileName="applogs/Springboot.log">
+            <PatternLayout pattern="%d{MM:dd HH:mm:ss.SSS} [%t] [%level] [%logger{36}] - %msg%n" />
+        </File>
+    </Appenders>
+    
+    <Loggers>
+        <!-- Logging custom package -->
+        <Logger name="com.stackroute" level="debug" additivity="false">
+            <AppenderRef ref="ConsoleAppender"></AppenderRef>
+            <AppenderRef ref="FileAppender"></AppenderRef>
+        </Logger>
+        <!-- Logging spring boot package -->
+        <Logger name="org.springframework.boot" level="debug" additivity="false">
+             <AppenderRef ref="ConsoleAppender"></AppenderRef>
+            <AppenderRef ref="FileAppender1"></AppenderRef>
+          </Logger>
+    </Loggers>
+</Configuration>

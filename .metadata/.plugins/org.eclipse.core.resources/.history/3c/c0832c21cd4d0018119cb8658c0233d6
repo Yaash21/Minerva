@@ -1,0 +1,4 @@
+spring.application.name = UserSearchService
+spring.cloud.config.uri = http://172.23.238.183:8888 
+management.security.enabled = false
+security.basic.enable : false
